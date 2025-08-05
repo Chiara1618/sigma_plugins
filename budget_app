@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h3>Upload CSV file</h3>
+    <input type="file" id="csvFile" accept=".csv" />
+    <br /><br />
+    <div id="output"></div>
+
+    <script>
+      document.getElementById("csvFile").addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          const text = event.target.result;
+          displayCSV(text);
+        };
+        reader.readAsText(file);
+      });
+
+      function displayCSV(csvText) {
+        const lines = csvText.trim().split("\n");
+        const headers = lines[0].split(",");
+        const rows = lines.slice(1).map((line) => line.split(","));
+
+        const table = document.createElement("table");
+        table.border = "1";
+
+        const thead = table.createTHead();
+        const headerRow = thead.insertRow();
+        headers.forEach((h) => {
+          const th = document.createElement("th");
+          th.textContent = h;
+          headerRow.appendChild(th);
+        });
+
+        const tbody = table.createTBody();
+        rows.forEach((row) => {
+          const tr = tbody.insertRow();
+          row.forEach((cell) => {
+            const td = tr.insertCell();
+            td.textContent = cell;
+          });
+        });
+
+        document.getElementById("output").innerHTML = "";
+        document.getElementById("output").appendChild(table);
+      }
+    </script>
+  </body>
+</html>
