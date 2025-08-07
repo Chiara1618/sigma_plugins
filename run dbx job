@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sigma → Databricks Trigger</title>
+  </head>
+  <body>
+    <h2>Lancia Job Databricks</h2>
+    <button onclick="runJob()">Lancia Job</button>
+    <div id="status"></div>
+
+    <script>
+      const API_PROXY_URL = "https://TUA-API.onrender.com/run-job"; // Cambia con la tua URL reale
+
+      function runJob() {
+        fetch(API_PROXY_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            job_id: 152352047428102, // <-- Sostituisci con il tuo Job ID
+            notebook_params: {
+              fiscal_year: "2025",
+              table_name: "example_table"
+            }
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("status").innerText = "Job avviato: " + JSON.stringify(data);
+        })
+        .catch(err => {
+          document.getElementById("status").innerText = "Errore: " + err;
+        });
+      }
+    </script>
+  </body>
+</html>
